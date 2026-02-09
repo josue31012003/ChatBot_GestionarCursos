@@ -43,7 +43,7 @@
 
     .wrap{
       width:100%;
-      max-width: 980px;
+      max-width: 1020px;
       display:grid;
       grid-template-columns: 1.25fr .75fr;
       gap:18px;
@@ -73,7 +73,7 @@
       display:flex;
       align-items:center;
       gap:10px;
-      font-weight: 800;
+      font-weight: 900;
       color: var(--brand-dark);
     }
     .badge{
@@ -83,7 +83,7 @@
       border-radius: 999px;
       font-size: 12px;
       color: #111111;
-      font-weight: 800;
+      font-weight: 900;
     }
     .header p{
       margin:6px 0 0;
@@ -125,7 +125,7 @@
       border-radius: 999px;
       padding: 10px 14px;
       cursor:pointer;
-      font-weight:800;
+      font-weight:900;
       font-size: 13px;
       transition: .15s ease;
       display:inline-flex;
@@ -183,8 +183,8 @@
       padding: 12px;
       background: #fff;
     }
-    .kpi .label{ font-size: 12px; color: var(--muted); font-weight: 700; }
-    .kpi .value{ font-size: 20px; font-weight: 900; margin-top: 4px; }
+    .kpi .label{ font-size: 12px; color: var(--muted); font-weight: 800; }
+    .kpi .value{ font-size: 20px; font-weight: 1000; margin-top: 4px; }
 
     .kpi.ok{ border-color: rgba(46,125,50,.25); }
     .kpi.ok .value{ color: var(--ok); }
@@ -193,14 +193,16 @@
     .kpi.danger{ border-color: rgba(198,40,40,.30); }
     .kpi.danger .value{ color: var(--danger); }
 
-    .cards{
+    /* LIST GRID */
+    .lists-grid{
       margin-top: 14px;
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
+      align-items:start;
     }
     @media (max-width: 700px){
-      .cards{ grid-template-columns: 1fr; }
+      .lists-grid{ grid-template-columns: 1fr; }
     }
 
     .list{
@@ -211,7 +213,7 @@
     }
     .list .title{
       padding: 10px 12px;
-      font-weight: 900;
+      font-weight: 1000;
       font-size: 13px;
       display:flex;
       align-items:center;
@@ -226,7 +228,7 @@
       border-radius: 999px;
       background: rgba(17,17,17,.08);
       color: #111111;
-      font-weight:900;
+      font-weight:1000;
     }
     .items{ padding: 8px 10px; }
 
@@ -238,13 +240,65 @@
       background: #fff;
     }
     .item:last-child{ margin-bottom:0; }
-    .item .top{ display:flex; justify-content:space-between; gap:10px; }
-    .item .name{ font-weight: 900; font-size: 13px; }
-    .item .meta{ color: var(--muted); font-size: 12px; margin-top: 4px; }
+
+    /* Course item layout improved */
+    .course-item{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      justify-content:space-between;
+    }
+    .course-left{ min-width:0; }
+    .course-name{
+      font-weight: 1000;
+      font-size: 13px;
+      margin:0;
+      line-height: 1.2;
+    }
+    .course-meta{
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 6px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    /* Big days badge */
+    .days-badge{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      width: 92px;
+      height: 56px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,.10);
+      background: #fff;
+      flex: 0 0 auto;
+    }
+    .days-badge .num{
+      font-size: 18px;
+      font-weight: 1000;
+      line-height: 1;
+    }
+    .days-badge .lbl{
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .days-badge.warn{ border-color: rgba(244,163,0,.35); }
+    .days-badge.warn .num{ color: var(--warn); }
+    .days-badge.danger{ border-color: rgba(198,40,40,.35); }
+    .days-badge.danger .num{ color: var(--danger); }
+    .days-badge.ok{ border-color: rgba(46,125,50,.28); }
+    .days-badge.ok .num{ color: var(--ok); }
+    .days-badge.neutral{ opacity:.85; }
 
     .tag{
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 1000;
       padding: 4px 10px;
       border-radius: 999px;
       white-space:nowrap;
@@ -270,7 +324,7 @@
       margin:0 0 8px;
       font-size: 14px;
       letter-spacing:.2px;
-      font-weight: 900;
+      font-weight: 1000;
       color:#111111;
     }
     .box p{
@@ -287,17 +341,6 @@
       margin-top: 12px;
     }
 
-    .select{
-      width:100%;
-      border: 2px solid rgba(17,17,17,.14);
-      border-radius: 14px;
-      padding: 10px;
-      outline:none;
-      background:#fff;
-      font-size: 13px;
-      color:#111111;
-    }
-
     textarea{
       width:100%;
       resize: vertical;
@@ -309,6 +352,7 @@
       font-size: 13px;
       font-family: inherit;
       color:#111111;
+      background:#fff;
     }
 
     .footer-note{
@@ -322,6 +366,77 @@
       font-size:12px;
       color: var(--muted);
       margin-top: 6px;
+    }
+
+    /* Checkbox list (multi-select) */
+    .courses-box{
+      border: 2px solid rgba(17,17,17,.14);
+      border-radius: 14px;
+      padding: 10px;
+      background: #fff;
+      max-height: 180px;
+      overflow: auto;
+    }
+
+    .course-row{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      padding: 8px 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,.06);
+      margin-bottom: 8px;
+      cursor:pointer;
+    }
+    .course-row:last-child{ margin-bottom:0; }
+
+    .course-row input{
+      margin-top: 3px;
+      transform: scale(1.1);
+      cursor:pointer;
+    }
+
+    .course-row .course-row-name{
+      font-weight: 1000;
+      font-size: 13px;
+      color: #111111;
+      line-height: 1.2;
+    }
+
+    .course-row .course-row-meta{
+      margin-top: 3px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .course-row .chip{
+      margin-left:auto;
+      font-size: 12px;
+      font-weight: 1000;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.10);
+      background:#fff;
+      white-space:nowrap;
+    }
+    .course-row .chip.danger{ color: var(--danger); border-color: rgba(198,40,40,.30); }
+    .course-row .chip.warn{ color: var(--warn); border-color: rgba(244,163,0,.30); }
+    .course-row .chip.neutral{ color: var(--muted); border-color: rgba(0,0,0,.10); }
+
+    /* Worker card */
+    .worker-card .name{
+      font-weight: 1000;
+      font-size: 14px;
+      margin:0;
+    }
+    .worker-card .line{
+      margin-top:6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .worker-card .line strong{
+      color:#111111;
+      font-weight: 900;
     }
   </style>
 </head>
@@ -345,7 +460,7 @@
           <button class="btn btn-ghost" id="btnLimpiar">Limpiar</button>
         </div>
 
-        <div class="small-hint">Tip: si tu DNI tiene 8 dígitos, ingrésalo sin espacios.</div>
+        <div class="small-hint">Tip: ingresa tu DNI sin espacios.</div>
 
         <div class="status" id="status"></div>
 
@@ -356,10 +471,26 @@
           <div class="kpi"><div class="label">Sin registro</div><div class="value" id="kpiSin">0</div></div>
         </div>
 
-        <div class="cards" id="lists" style="display:none;">
+        <!-- LISTS GRID: Worker first (top-left) -->
+        <div class="lists-grid" id="lists" style="display:none;">
+          <div class="list">
+            <div class="title">Datos del colaborador <span class="pill">Info</span></div>
+            <div class="items" id="boxTrab"></div>
+          </div>
+
           <div class="list">
             <div class="title">Cursos críticos <span class="pill" id="pillCrit">0</span></div>
             <div class="items" id="listCrit"></div>
+          </div>
+
+          <div class="list">
+            <div class="title">Cursos por vencer <span class="pill" id="pillPor">0</span></div>
+            <div class="items" id="listPor"></div>
+          </div>
+
+          <div class="list">
+            <div class="title">Cursos vencidos <span class="pill" id="pillVen">0</span></div>
+            <div class="items" id="listVen"></div>
           </div>
 
           <div class="list">
@@ -370,11 +501,6 @@
           <div class="list">
             <div class="title">Sin registro <span class="pill" id="pillSin">0</span></div>
             <div class="items" id="listSin"></div>
-          </div>
-
-          <div class="list">
-            <div class="title">Datos del colaborador <span class="pill">Info</span></div>
-            <div class="items" id="boxTrab"></div>
           </div>
         </div>
       </div>
@@ -389,10 +515,11 @@
         <div class="actions">
           <button class="btn btn-danger" id="btnNotificar" disabled>📩 Notificar a supervisor</button>
 
-          <label style="font-size:13px; font-weight:900; margin-top:6px;">Cursos a actualizar</label>
-          <select id="selectCursos" class="select" multiple disabled></select>
+          <label style="font-size:13px; font-weight:1000; margin-top:6px;">Cursos a actualizar</label>
+          <div id="coursesBox" class="courses-box" aria-disabled="true"></div>
+          <div class="small-hint" id="coursesHint">Selecciona uno o más cursos marcando la casilla.</div>
 
-          <label style="font-size:13px; font-weight:900; margin-top:6px;">Detalle (opcional)</label>
+          <label style="font-size:13px; font-weight:1000; margin-top:6px;">Detalle (opcional)</label>
           <textarea id="detalle" placeholder="Ej: Realicé la capacitación el 20/01 y entregué constancia a mi supervisor." disabled></textarea>
 
           <button class="btn btn-primary" id="btnActualizar" disabled>✅ Solicitar actualización</button>
@@ -419,7 +546,12 @@
   // ========= STATE =========
   let lastDni = "";
   let lastResponse = null;
-  let criticalCourses = [];
+
+  let coursesVig = [];
+  let coursesPor = [];
+  let coursesVen = [];
+  let coursesSin = [];
+  let criticalCourses = []; // vencidos + por vencer
 
   // ========= HELPERS =========
   const el = (id) => document.getElementById(id);
@@ -439,6 +571,11 @@
   function clearUI() {
     lastDni = "";
     lastResponse = null;
+
+    coursesVig = [];
+    coursesPor = [];
+    coursesVen = [];
+    coursesSin = [];
     criticalCourses = [];
 
     setStatus("");
@@ -448,6 +585,8 @@
     el("lists").style.display = "none";
 
     el("listCrit").innerHTML = "";
+    el("listPor").innerHTML = "";
+    el("listVen").innerHTML = "";
     el("listVig").innerHTML = "";
     el("listSin").innerHTML = "";
     el("boxTrab").innerHTML = "";
@@ -455,63 +594,106 @@
     el("btnNotificar").disabled = true;
     el("btnActualizar").disabled = true;
 
-    el("selectCursos").innerHTML = "";
-    el("selectCursos").disabled = true;
+    el("coursesBox").innerHTML = "";
+    el("coursesBox").setAttribute("aria-disabled", "true");
 
     el("detalle").value = "";
     el("detalle").disabled = true;
   }
 
-  function tagClass(estado){
+  function stateToTagClass(estado){
     if (estado === "VENCIDO") return "danger";
     if (estado === "POR VENCER") return "warn";
     if (estado === "VIGENTE") return "ok";
     return "neutral";
   }
 
-  function renderItem(c) {
+  function daysBadgeClass(estado){
+    if (estado === "VENCIDO") return "danger";
+    if (estado === "POR VENCER") return "warn";
+    if (estado === "VIGENTE") return "ok";
+    return "neutral";
+  }
+
+  function formatDays(d){
+    if (d === null || d === undefined) return "—";
+    // para vencidos el API puede devolver negativo; mostramos 0 o el negativo? mejor mostrar el valor tal cual para ser transparente:
+    return String(d);
+  }
+
+  function renderCourseItem(c) {
     const estado = c.estado || "N/A";
     const venc = c.fecha_vencimiento || "—";
-    const dias = (c.dias_para_vencer === null || c.dias_para_vencer === undefined) ? "—" : c.dias_para_vencer;
+    const dias = formatDays(c.dias_para_vencer);
 
     return `
       <div class="item">
-        <div class="top">
-          <div>
-            <div class="name">${escapeHtml(c.curso || "Curso")}</div>
-            <div class="meta">Vence: ${escapeHtml(venc)} · Días: ${escapeHtml(String(dias))}</div>
+        <div class="course-item">
+          <div class="course-left">
+            <div class="course-name">${escapeHtml(c.curso || "Curso")}</div>
+            <div class="course-meta">
+              <span><strong>Vence:</strong> ${escapeHtml(venc)}</span>
+              <span class="tag ${stateToTagClass(estado)}">${escapeHtml(estado)}</span>
+            </div>
           </div>
-          <span class="tag ${tagClass(estado)}">${escapeHtml(estado)}</span>
+
+          <div class="days-badge ${daysBadgeClass(estado)}" title="Días restantes para vencer (negativo = vencido)">
+            <div class="num">${escapeHtml(dias)}</div>
+            <div class="lbl">días</div>
+          </div>
         </div>
       </div>
     `;
   }
 
-  function fillSelectCursos(courses){
-    const sel = el("selectCursos");
-    sel.innerHTML = "";
+  function renderEmpty(msg){
+    return `<div class="item"><div class="course-name">${escapeHtml(msg)}</div></div>`;
+  }
+
+  // ========= MULTISELECT CHECKBOX LIST =========
+  function fillCoursesBox(courses){
+    const box = el("coursesBox");
+    box.innerHTML = "";
+
+    if (!courses || courses.length === 0){
+      box.innerHTML = `<div class="small-hint">No tienes cursos críticos para actualizar.</div>`;
+      return;
+    }
+
     courses.forEach(c => {
-      const opt = document.createElement("option");
-      opt.value = c.curso;
-      opt.textContent = c.curso;
-      sel.appendChild(opt);
+      const estado = c.estado || "N/A";
+      const venc = c.fecha_vencimiento || "—";
+      const dias = formatDays(c.dias_para_vencer);
+
+      const chipClass = (estado === "VENCIDO") ? "danger"
+                      : (estado === "POR VENCER") ? "warn"
+                      : "neutral";
+
+      const row = document.createElement("label");
+      row.className = "course-row";
+      row.innerHTML = `
+        <input type="checkbox" class="course-check" value="${escapeHtml(c.curso)}" aria-label="Seleccionar ${escapeHtml(c.curso)}">
+        <div>
+          <div class="course-row-name">${escapeHtml(c.curso)}</div>
+          <div class="course-row-meta">Vence: ${escapeHtml(venc)} · Días: ${escapeHtml(dias)}</div>
+        </div>
+        <span class="chip ${chipClass}">${escapeHtml(estado)}</span>
+      `;
+
+      row.querySelector(".course-check").addEventListener("change", updateActionEnablement);
+      box.appendChild(row);
     });
   }
 
   function getSelectedCursos(){
-    const sel = el("selectCursos");
-    const out = [];
-    for (const opt of sel.options){
-      if (opt.selected) out.push(opt.value);
-    }
-    return out;
+    const checks = document.querySelectorAll(".course-check:checked");
+    return Array.from(checks).map(ch => ch.value);
   }
 
   function updateActionEnablement() {
     const hasCritical = criticalCourses.length > 0;
 
     el("btnNotificar").disabled = !hasCritical;
-    el("selectCursos").disabled = !hasCritical;
     el("detalle").disabled = !hasCritical;
 
     const selected = getSelectedCursos();
@@ -560,7 +742,6 @@
   async function consultar() {
     const dni = el("dni").value.trim();
 
-    // validación ligera
     if (!dni) { setStatus("Ingresa un DNI."); return; }
     if (!/^\d{8,12}$/.test(dni)) { setStatus("DNI inválido. Ingresa solo números (8 a 12 dígitos)."); return; }
 
@@ -579,51 +760,64 @@
       lastDni = dni;
       lastResponse = data;
 
+      // Load arrays
+      coursesVig = data.cursos?.vigentes || [];
+      coursesPor = data.cursos?.por_vencer || [];
+      coursesVen = data.cursos?.vencidos || [];
+      coursesSin = data.cursos?.sin_registro || [];
+      criticalCourses = [...coursesVen, ...coursesPor];
+
       // KPIs
-      el("kpiVig").textContent = data.resumen?.vigentes ?? 0;
-      el("kpiPor").textContent = data.resumen?.por_vencer ?? 0;
-      el("kpiVen").textContent = data.resumen?.vencidos ?? 0;
-      el("kpiSin").textContent = data.resumen?.sin_registro ?? 0;
+      el("kpiVig").textContent = data.resumen?.vigentes ?? coursesVig.length;
+      el("kpiPor").textContent = data.resumen?.por_vencer ?? coursesPor.length;
+      el("kpiVen").textContent = data.resumen?.vencidos ?? coursesVen.length;
+      el("kpiSin").textContent = data.resumen?.sin_registro ?? coursesSin.length;
       el("kpis").style.display = "grid";
 
-      const vencidos = data.cursos?.vencidos || [];
-      const porVencer = data.cursos?.por_vencer || [];
-      const vigentes = data.cursos?.vigentes || [];
-      const sinReg = data.cursos?.sin_registro || [];
-
-      criticalCourses = [...vencidos, ...porVencer];
-
+      // Pills
       el("pillCrit").textContent = criticalCourses.length;
-      el("pillVig").textContent = vigentes.length;
-      el("pillSin").textContent = sinReg.length;
+      el("pillPor").textContent = coursesPor.length;
+      el("pillVen").textContent = coursesVen.length;
+      el("pillVig").textContent = coursesVig.length;
+      el("pillSin").textContent = coursesSin.length;
 
-      el("listCrit").innerHTML = criticalCourses.length
-        ? criticalCourses.map(renderItem).join("")
-        : `<div class="item"><div class="name">Sin cursos críticos</div><div class="meta">No tienes cursos vencidos o por vencer.</div></div>`;
-
-      el("listVig").innerHTML = vigentes.length
-        ? vigentes.map(renderItem).join("")
-        : `<div class="item"><div class="name">Sin cursos vigentes</div><div class="meta">No hay cursos con vigencia registrada.</div></div>`;
-
-      el("listSin").innerHTML = sinReg.length
-        ? sinReg.map(renderItem).join("")
-        : `<div class="item"><div class="name">Sin cursos faltantes</div><div class="meta">Todo parece estar registrado.</div></div>`;
-
+      // Worker info FIRST (so it never "feels hidden")
       const t = data.trabajador || {};
       el("boxTrab").innerHTML = `
-        <div class="item">
+        <div class="item worker-card">
           <div class="name">${escapeHtml((t.apellido_paterno||"") + " " + (t.apellido_materno||"") + ", " + (t.nombre||""))}</div>
-          <div class="meta">DNI: ${escapeHtml(t.dni||dni)}</div>
-          <div class="meta">Puesto: ${escapeHtml(t.puesto||"")}</div>
-          <div class="meta">Empresa: ${escapeHtml(t.empresa||"")}</div>
+          <div class="line"><strong>DNI:</strong> ${escapeHtml(t.dni||dni)}</div>
+          <div class="line"><strong>Puesto:</strong> ${escapeHtml(t.puesto||"")}</div>
+          <div class="line"><strong>Empresa:</strong> ${escapeHtml(t.empresa||"")}</div>
         </div>
       `;
 
+      // Lists
+      el("listCrit").innerHTML = criticalCourses.length
+        ? criticalCourses.map(renderCourseItem).join("")
+        : renderEmpty("Sin cursos críticos.");
+
+      el("listPor").innerHTML = coursesPor.length
+        ? coursesPor.map(renderCourseItem).join("")
+        : renderEmpty("Sin cursos por vencer.");
+
+      el("listVen").innerHTML = coursesVen.length
+        ? coursesVen.map(renderCourseItem).join("")
+        : renderEmpty("Sin cursos vencidos.");
+
+      el("listVig").innerHTML = coursesVig.length
+        ? coursesVig.map(renderCourseItem).join("")
+        : renderEmpty("Sin cursos vigentes.");
+
+      el("listSin").innerHTML = coursesSin.length
+        ? coursesSin.map(renderCourseItem).join("")
+        : renderEmpty("Sin cursos faltantes.");
+
       el("lists").style.display = "grid";
 
-      // Acciones
-      fillSelectCursos(criticalCourses);
-      el("selectCursos").disabled = (criticalCourses.length === 0);
+      // Actions box: checkbox list
+      fillCoursesBox(criticalCourses);
+      el("coursesBox").setAttribute("aria-disabled", String(criticalCourses.length === 0));
       el("detalle").disabled = (criticalCourses.length === 0);
 
       setStatus(`Consulta completada para DNI ${dni}.`);
@@ -690,8 +884,6 @@
   el("dni").addEventListener("keydown", (e) => {
     if (e.key === "Enter") consultar();
   });
-
-  el("selectCursos").addEventListener("change", updateActionEnablement);
 
   // init
   clearUI();
