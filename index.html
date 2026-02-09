@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Consulta de Capacitaciones</title>
+  <style>
+    :root{
+      --bg: #f4fbfa;
+      --card: #ffffff;
+      --ink: #0b1f22;
+      --muted: #4b6b6f;
+      --brand: #10b6ad;      /* verde agua */
+      --brand-2:#0e9f98;     /* más oscuro */
+      --brand-3:#bfeeed;     /* claro */
+      --danger:#d43b3b;
+      --warn:#f4a300;
+      --ok:#1f9d55;
+      --shadow: 0 12px 28px rgba(0,0,0,.08);
+      --radius: 16px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1000px 600px at 20% 0%, rgba(16,182,173,.12), transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, rgba(16,182,173,.10), transparent 55%),
+        var(--bg);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width: 980px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+    }
+
+    @media (max-width: 900px){
+      .wrap{grid-template-columns: 1fr;}
+    }
+
+    .panel{
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      border: 1px solid rgba(16,182,173,.18);
+    }
+
+    .header{
+      padding:18px 18px 14px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color:#fff;
+    }
+    .header h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:.2px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .badge{
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.22);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      opacity:.95;
+    }
+    .header p{
+      margin:6px 0 0;
+      opacity:.9;
+      font-size: 13px;
+    }
+
+    .content{ padding:16px 18px 18px; }
+
+    .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+
+    .input{
+      flex:1;
+      min-width: 220px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,.12);
+      border-radius: 999px;
+      padding: 10px 12px;
+    }
+    .input input{
+      border:none; outline:none;
+      width:100%;
+      font-size: 14px;
+      background:transparent;
+    }
+
+    .btn{
+      border:none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor:pointer;
+      font-weight:600;
+      font-size: 13px;
+      transition: .15s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn-primary{
+      background: var(--brand-2);
+      color:#fff;
+    }
+    .btn-primary:hover{ filter: brightness(.95); transform: translateY(-1px); }
+
+    .btn-ghost{
+      background: rgba(16,182,173,.10);
+      color: var(--brand-2);
+      border: 1px solid rgba(16,182,173,.28);
+    }
+    .btn-ghost:hover{ background: rgba(16,182,173,.14); }
+
+    .btn-danger{
+      background: rgba(212,59,59,.12);
+      color: var(--danger);
+      border: 1px solid rgba(212,59,59,.28);
+    }
+
+    .status{
+      margin-top:12px;
+      font-size: 13px;
+      color: var(--muted);
+      min-height: 18px;
+    }
+
+    .grid{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 700px){
+      .grid{ grid-template-columns: repeat(2,1fr); }
+    }
+
+    .kpi{
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fff;
+    }
+    .kpi .label{ font-size: 12px; color: var(--muted); }
+    .kpi .value{ font-size: 20px; font-weight: 800; margin-top: 4px; }
+
+    .kpi.ok{ border-color: rgba(31,157,85,.25); }
+    .kpi.ok .value{ color: var(--ok); }
+    .kpi.warn{ border-color: rgba(244,163,0,.28); }
+    .kpi.warn .value{ color: var(--warn); }
+    .kpi.danger{ border-color: rgba(212,59,59,.28); }
+    .kpi.danger .value{ color: var(--danger); }
+
+    .cards{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 700px){
+      .cards{ grid-template-columns: 1fr; }
+    }
+
+    .list{
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 14px;
+      overflow:hidden;
+      background:#fff;
+    }
+    .list .title{
+      padding: 10px 12px;
+      font-weight: 800;
+      font-size: 13px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background: rgba(16,182,173,.08);
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+    .pill{
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.06);
+      color: var(--muted);
+      font-weight:700;
+    }
+    .items{ padding: 8px 10px; }
+    .item{
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,.06);
+      margin-bottom: 8px;
+    }
+    .item:last-child{ margin-bottom:0; }
+    .item .top{ display:flex; justify-content:space-between; gap:10px; }
+    .item .name{ font-weight: 800; font-size: 13px; }
+    .item .meta{ color: var(--muted); font-size: 12px; margin-top: 4px; }
+
+    .tag{
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space:nowrap;
+    }
+    .tag.ok{ background: rgba(31,157,85,.12); color: var(--ok); }
+    .tag.warn{ background: rgba(244,163,0,.14); color: var(--warn); }
+    .tag.danger{ background: rgba(212,59,59,.12); color: var(--danger); }
+    .tag.neutral{ background: rgba(0,0,0,.06); color: var(--muted); }
+
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
+
+    .box{
+      padding: 14px 16px 16px;
+    }
+
+    .box h2{
+      margin:0 0 8px;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .box p{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .actions{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top: 12px;
+    }
+
+    .select{
+      width:100%;
+      border: 1px solid rgba(0,0,0,.12);
+      border-radius: 14px;
+      padding: 10px;
+      outline:none;
+      background:#fff;
+      font-size: 13px;
+    }
+
+    textarea{
+      width:100%;
+      resize: vertical;
+      min-height: 74px;
+      border: 1px solid rgba(0,0,0,.12);
+      border-radius: 14px;
+      padding: 10px;
+      outline:none;
+      font-size: 13px;
+      font-family: inherit;
+    }
+
+    .footer-note{
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      opacity: .9;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <!-- Panel principal -->
+    <section class="panel">
+      <div class="header">
+        <h1>
+          🦺 Consulta de Capacitaciones
+          <span class="badge">Antapaccay / Ferreyros</span>
+        </h1>
+        <p>Ingresa tu DNI para ver el estado de tus capacitaciones y gestionar acciones.</p>
+      </div>
+
+      <div class="content">
+        <div class="row">
+          <div class="input" title="DNI en formato texto">
+            <span>🔎</span>
+            <input id="dni" inputmode="numeric" placeholder="DNI (8 dígitos)" maxlength="12" />
+          </div>
+          <button class="btn btn-primary" id="btnConsultar">Consultar</button>
+          <button class="btn btn-ghost" id="btnLimpiar">Limpiar</button>
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <div class="grid" id="kpis" style="display:none;">
+          <div class="kpi ok"><div class="label">Vigentes</div><div class="value" id="kpiVig">0</div></div>
+          <div class="kpi warn"><div class="label">Por vencer (≤30 días)</div><div class="value" id="kpiPor">0</div></div>
+          <div class="kpi danger"><div class="label">Vencidos</div><div class="value" id="kpiVen">0</div></div>
+          <div class="kpi"><div class="label">Sin registro</div><div class="value" id="kpiSin">0</div></div>
+        </div>
+
+        <div class="cards" id="lists" style="display:none;">
+          <div class="list">
+            <div class="title">Cursos críticos <span class="pill" id="pillCrit">0</span></div>
+            <div class="items" id="listCrit"></div>
+          </div>
+
+          <div class="list">
+            <div class="title">Cursos vigentes <span class="pill" id="pillVig">0</span></div>
+            <div class="items" id="listVig"></div>
+          </div>
+
+          <div class="list">
+            <div class="title">Sin registro <span class="pill" id="pillSin">0</span></div>
+            <div class="items" id="listSin"></div>
+          </div>
+
+          <div class="list">
+            <div class="title">Datos del colaborador <span class="pill">Info</span></div>
+            <div class="items" id="boxTrab"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lateral de acciones -->
+    <aside class="side">
+      <section class="panel box">
+        <h2>Acciones</h2>
+        <p>Si tienes cursos vencidos o por vencer, puedes notificar automáticamente a tu supervisor o solicitar actualización si ya realizaste la capacitación.</p>
+
+        <div class="actions">
+          <button class="btn btn-danger" id="btnNotificar" disabled>📩 Notificar a supervisor</button>
+
+          <label style="font-size:13px; font-weight:800; margin-top:6px;">Cursos a actualizar</label>
+          <select id="selectCursos" class="select" multiple disabled></select>
+
+          <label style="font-size:13px; font-weight:800; margin-top:6px;">Detalle (opcional)</label>
+          <textarea id="detalle" placeholder="Ej: Realicé la capacitación el 20/01 y entregué constancia a mi supervisor." disabled></textarea>
+
+          <button class="btn btn-primary" id="btnActualizar" disabled>✅ Solicitar actualización</button>
+
+          <div class="footer-note" id="note"></div>
+        </div>
+      </section>
+
+      <section class="panel box">
+        <h2>Ayuda rápida</h2>
+        <p>• “Por vencer” = 30 días o menos.<br>
+           • Si no aparece un curso, revisa con tu supervisor si está registrado en la base.<br>
+           • Las acciones generan un registro en “Solicitudes”.</p>
+      </section>
+    </aside>
+  </div>
+
+<script>
+  // ========= CONFIG =========
+  const SCRIPT_URL = "https://script.google.com/a/macros/ferreyros.com.pe/s/AKfycbw9hgVzn5cFIorngp3xcS2t7ox-EaqtWp4dErfRN-0SCQ5VJxsZ_2N5xkNI9-bESWuveQ/exec";
+
+  // ========= STATE =========
+  let lastDni = "";
+  let lastResponse = null; // JSON de consulta
+  let criticalCourses = []; // vencidos + por vencer
+
+  // ========= UI =========
+  const el = (id) => document.getElementById(id);
+
+  function setStatus(msg) {
+    el("status").textContent = msg || "";
+  }
+
+  function setNote(msg) {
+    el("note").textContent = msg || "";
+  }
+
+  function clearUI() {
+    lastDni = "";
+    lastResponse = null;
+    criticalCourses = [];
+
+    setStatus("");
+    setNote("");
+
+    el("kpis").style.display = "none";
+    el("lists").style.display = "none";
+
+    el("listCrit").innerHTML = "";
+    el("listVig").innerHTML = "";
+    el("listSin").innerHTML = "";
+    el("boxTrab").innerHTML = "";
+
+    el("btnNotificar").disabled = true;
+    el("btnActualizar").disabled = true;
+
+    el("selectCursos").innerHTML = "";
+    el("selectCursos").disabled = true;
+
+    el("detalle").value = "";
+    el("detalle").disabled = true;
+  }
+
+  function tagClass(estado){
+    if (estado === "VENCIDO") return "danger";
+    if (estado === "POR VENCER") return "warn";
+    if (estado === "VIGENTE") return "ok";
+    return "neutral";
+  }
+
+  function renderItem(c) {
+    const estado = c.estado || "N/A";
+    const venc = c.fecha_vencimiento || "—";
+    const dias = (c.dias_para_vencer === null || c.dias_para_vencer === undefined) ? "—" : c.dias_para_vencer;
+
+    return `
+      <div class="item">
+        <div class="top">
+          <div>
+            <div class="name">${escapeHtml(c.curso || "Curso")}</div>
+            <div class="meta">Vence: ${escapeHtml(venc)} · Días: ${escapeHtml(String(dias))}</div>
+          </div>
+          <span class="tag ${tagClass(estado)}">${escapeHtml(estado)}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  function escapeHtml(s){
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function fillSelectCursos(courses){
+    const sel = el("selectCursos");
+    sel.innerHTML = "";
+    courses.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c.curso;
+      opt.textContent = c.curso;
+      sel.appendChild(opt);
+    });
+  }
+
+  function getSelectedCursos(){
+    const sel = el("selectCursos");
+    const out = [];
+    for (const opt of sel.options){
+      if (opt.selected) out.push(opt.value);
+    }
+    return out;
+  }
+
+  function updateActionEnablement() {
+    const hasCritical = criticalCourses.length > 0;
+
+    el("btnNotificar").disabled = !hasCritical;
+    el("selectCursos").disabled = !hasCritical;
+    el("detalle").disabled = !hasCritical;
+
+    // actualizar solo si elige al menos un curso
+    const selected = getSelectedCursos();
+    el("btnActualizar").disabled = !(hasCritical && selected.length > 0);
+
+    setNote(hasCritical
+      ? "Acciones disponibles por tener cursos vencidos o por vencer."
+      : "No tienes cursos críticos. No es necesario generar acciones.");
+  }
+
+  // ========= API CALLS =========
+  async function apiGet(url) {
+    const res = await fetch(url, { method: "GET" });
+    const text = await res.text();
+    let data;
+    try { data = JSON.parse(text); }
+    catch { throw new Error("Respuesta no válida del servidor."); }
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${text}`);
+    return data;
+  }
+
+  async function consultar() {
+    const dni = el("dni").value.trim();
+    if (!dni) { setStatus("Ingresa un DNI."); return; }
+
+    clearUI();
+    setStatus("Consultando...");
+
+    try {
+      const url = `${SCRIPT_URL}?dni=${encodeURIComponent(dni)}`;
+      const data = await apiGet(url);
+
+      if (!data.ok) {
+        setStatus(data.error || "No se pudo completar la consulta.");
+        return;
+      }
+
+      lastDni = dni;
+      lastResponse = data;
+
+      // KPIs
+      el("kpiVig").textContent = data.resumen?.vigentes ?? 0;
+      el("kpiPor").textContent = data.resumen?.por_vencer ?? 0;
+      el("kpiVen").textContent = data.resumen?.vencidos ?? 0;
+      el("kpiSin").textContent = data.resumen?.sin_registro ?? 0;
+
+      el("kpis").style.display = "grid";
+
+      // Listas
+      const vencidos = data.cursos?.vencidos || [];
+      const porVencer = data.cursos?.por_vencer || [];
+      const vigentes = data.cursos?.vigentes || [];
+      const sinReg = data.cursos?.sin_registro || [];
+
+      criticalCourses = [...vencidos, ...porVencer];
+
+      el("pillCrit").textContent = criticalCourses.length;
+      el("pillVig").textContent = vigentes.length;
+      el("pillSin").textContent = sinReg.length;
+
+      el("listCrit").innerHTML = criticalCourses.length
+        ? criticalCourses.map(renderItem).join("")
+        : `<div class="item"><div class="name">Sin cursos críticos</div><div class="meta">No tienes cursos vencidos o por vencer.</div></div>`;
+
+      el("listVig").innerHTML = vigentes.length
+        ? vigentes.map(renderItem).join("")
+        : `<div class="item"><div class="name">Sin cursos vigentes</div><div class="meta">No hay cursos con vigencia registrada.</div></div>`;
+
+      el("listSin").innerHTML = sinReg.length
+        ? sinReg.map(renderItem).join("")
+        : `<div class="item"><div class="name">Sin cursos faltantes</div><div class="meta">Todo parece estar registrado.</div></div>`;
+
+      const t = data.trabajador || {};
+      el("boxTrab").innerHTML = `
+        <div class="item">
+          <div class="name">${escapeHtml((t.apellido_paterno||"") + " " + (t.apellido_materno||"") + ", " + (t.nombre||""))}</div>
+          <div class="meta">DNI: ${escapeHtml(t.dni||dni)}</div>
+          <div class="meta">Puesto: ${escapeHtml(t.puesto||"")}</div>
+          <div class="meta">Empresa: ${escapeHtml(t.empresa||"")}</div>
+        </div>
+      `;
+
+      el("lists").style.display = "grid";
+
+      // Acciones: llenar selector con cursos críticos
+      fillSelectCursos(criticalCourses);
+      el("selectCursos").disabled = (criticalCourses.length === 0);
+      el("detalle").disabled = (criticalCourses.length === 0);
+
+      setStatus(`Consulta completada para DNI ${dni}.`);
+      updateActionEnablement();
+
+    } catch (err) {
+      setStatus(`Error: ${err.message}`);
+    }
+  }
+
+  async function notificarSupervisor() {
+    if (!lastDni) { setStatus("Primero realiza una consulta por DNI."); return; }
+    if (!criticalCourses.length) { setStatus("No tienes cursos críticos para notificar."); return; }
+
+    setStatus("Enviando notificación...");
+    try {
+      const url = `${SCRIPT_URL}?action=notificar&dni=${encodeURIComponent(lastDni)}`;
+      const data = await apiGet(url);
+
+      if (!data.ok) {
+        setStatus(data.error || "No se pudo enviar la notificación.");
+        return;
+      }
+      setStatus("Notificación enviada correctamente.");
+    } catch (err) {
+      setStatus(`Error: ${err.message}`);
+    }
+  }
+
+  async function solicitarActualizacion() {
+    if (!lastDni) { setStatus("Primero realiza una consulta por DNI."); return; }
+    const selected = getSelectedCursos();
+    if (selected.length === 0) {
+      setStatus("Selecciona al menos un curso para solicitar actualización.");
+      return;
+    }
+
+    setStatus("Enviando solicitud de actualización...");
+    try {
+      const cursosParam = selected.join("|");
+      const detalle = el("detalle").value.trim();
+
+      const url =
+        `${SCRIPT_URL}?action=actualizar&dni=${encodeURIComponent(lastDni)}&cursos=${encodeURIComponent(cursosParam)}&detalle=${encodeURIComponent(detalle)}`;
+
+      const data = await apiGet(url);
+
+      if (!data.ok) {
+        setStatus(data.error || "No se pudo enviar la solicitud.");
+        return;
+      }
+      setStatus("Solicitud enviada correctamente.");
+    } catch (err) {
+      setStatus(`Error: ${err.message}`);
+    }
+  }
+
+  // ========= EVENTS =========
+  el("btnConsultar").addEventListener("click", consultar);
+  el("btnLimpiar").addEventListener("click", clearUI);
+
+  el("dni").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") consultar();
+  });
+
+  el("btnNotificar").addEventListener("click", notificarSupervisor);
+  el("btnActualizar").addEventListener("click", solicitarActualizacion);
+
+  el("selectCursos").addEventListener("change", updateActionEnablement);
+
+  // init
+  clearUI();
+</script>
+</body>
+</html>
